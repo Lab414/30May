@@ -1,0 +1,44 @@
+import sys, math, random, urllib2, pickle, pygmaps
+MyIPfile=open("F:\circuits.txt", "rb")
+
+mymap = pygmaps.maps(52.5243700, 13.41, 5)
+
+for line in MyIPfile:
+    splited=line.split(';')
+    print ((splited[2]))
+    content = urllib2.urlopen('http://api.ipinfodb.com/v3/ip-city/?key=524c36a0fae0f563df0cdcbdb87383d055f76045ace45a345d5408dd3e68d9db&ip=%s'%splited[2]).read()
+    spl=content.split(';')
+    exit_node=(float(spl[8]) + random.random(),float(spl[9])+ random.random())
+    #print ((splited[3]))
+    content = urllib2.urlopen('http://api.ipinfodb.com/v3/ip-city/?key=524c36a0fae0f563df0cdcbdb87383d055f76045ace45a345d5408dd3e68d9db&ip=%s'%splited[3]).read()
+    spl=content.split(';')
+    middle_node=(float(spl[8]) + random.random(),float(spl[9])+ random.random())
+    #print ((splited[4]))
+
+    content = urllib2.urlopen('http://api.ipinfodb.com/v3/ip-city/?key=524c36a0fae0f563df0cdcbdb87383d055f76045ace45a345d5408dd3e68d9db&ip=%s'%splited[4]).read()
+    spl=content.split(';')
+    entry_node=(float(spl[8]) + random.random(),float(spl[9])+ random.random())
+    dest = (float((splited[0])),float(splited[1]))
+    print exit_node
+    #print middle_node
+    #print entry_node
+    #print dest
+    mymap.addpoint(exit_node[0],exit_node[1],"#FF0000")
+    mymap.addpoint(entry_node[0],entry_node[1],"#00FF00")
+    mymap.addpoint(middle_node[0],middle_node[1],"#0000FF")
+    #mymap.addpoint(32,-97,"#0F000F")
+    #mymap.addpoint(dest[0],dest[1],"#0F00F0")
+
+    r = lambda: random.randint(0,255)
+    color=('#%02X%02X%02X' % (r(),r(),r()))
+    path=[entry_node, middle_node, exit_node]
+    mymap.addpath(path,color)
+mymap.draw('./mymap.html')
+
+
+    
+    
+    
+    
+    
+
